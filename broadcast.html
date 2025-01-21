@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>XMR Proxy | Broadcast Transaction</title>
+        <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/npm/xmr-proxy@1.0.0/static/monero2.png">
+
+        <meta name="description" content="XMR Proxy - Open Source UI for broadcasting XMR transactions">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xmr-proxy@1.0.0/static/bootstrap.css" integrity="sha384-Im/iImeiFs6vR4Gu/D+bF98AETfDwYhPGhgZB3wmxDdDK5lYRFOrsrO/NhS1qesm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" integrity="sha384-XGjxtQfXaH2tnPFa9x+ruJTuLE3Aa6LhHSWRr1XeTyhezb4abCG4ccI5AkVDxqC+" crossorigin="anonymous">
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js" integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/xmr-proxy@1.0.0/static/nodes.js" integrity="sha384-2PRVDAbMS7cLYxFFt4A+WZ6INfDoeu7GIdptyijqwMYhcsrmAtJ9PfX5jJuvJ4iT" crossorigin="anonymous"></script>
+
+        <style>
+            @media (min-width: 1100px) {
+                .container {
+                    width: 1100px;
+                }
+            }
+            @media (min-width: 768px) {
+                .navbar-mobile {
+                    display: none !important;
+                }
+            }
+            .navbar-mobile {
+                flex-basis: 100%;
+                flex-grow: 1;
+                align-items: center;
+            }
+            .mb-5-super {
+                margin-bottom: 0.5rem !important;
+            }
+            .logo {
+                max-width: 40px;
+                max-height: 40px;
+            }
+            .loader {
+                animation: rotation 2s infinite linear;
+            }
+            .status {
+                display: block;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100px;
+            }
+            @keyframes rotation {
+                from {
+                    transform: rotate(359deg);
+                }
+                to {
+                    transform: rotate(0deg);
+                }
+            }
+            .bg-purple {
+                background-color: purple;
+            }
+            .table-column {
+                word-wrap: break-word;
+                max-width: 500px;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Main Container -->
+        <div class="container">
+
+            <!-- Header -->
+            <header class="py-2 mt-2 mb-3 border-bottom">
+                <nav class="navbar navbar-expand-md">
+                    <a href="#" class="navbar-brand me-md-auto">
+                        <img src="https://cdn.jsdelivr.net/npm/xmr-proxy@1.0.0/static/monero2.png" class="me-2 logo"> 
+                        <span class="fs-4 align-middle">XMR Proxy</span>
+                    </a>
+                    
+                    <!-- Desktop Navbar -->
+                    <ul class="nav nav-pills">
+                        <li class="nav-item d-none d-md-block">
+                            <a href="#" class="nav-link bar-link active" data-page="home">Home</a>
+                        </li>
+                    </ul>
+
+                    <!-- Mobile Navbar -->
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarToggleExternalContent"
+                        aria-controls="navbarToggleExternalContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                    >
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                     <div class="navbar-mobile collapse" id="navbarToggleExternalContent">
+                        <ul class="navbar-nav me-auto mt-2 mb-2 mb-lg-0">
+                            <li class="nav-item d-md-none border-top mt-2 mb-2"></li>
+                            <li class="nav-item d-md-none">
+                                <a href="#" class="nav-link bar-link active" data-page="home">Home</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+            <!-- Messages -->
+            <div id="messages"></div>
+            <div class="alert alert-warning" role="alert">
+                This UI helps you to broadcast transactions on the selected public Monero RPC Node.
+            </div>
+
+            <!-- Broadcast -->
+            <div id="home" class="page">
+                <div class="col-md-12">
+                    <h2 class="mb-5-super">Broadcast Transaction</h2>
+                    <p>
+                        Broadcast signed encoded transaction to one of public Monero nodes listed on <a href="https://monero.fail" target="_blank" rel="noreferrer nofollow">monero.fail</a>. Make sure that you use this UI on local side (by opening broadcast.html), and make sure to access somewhere where your real IP wouldn't be logged with the tx (like Tor Browser, or with VPN).
+                    </p>
+                    <!-- Cards -->
+                    <div class="row">
+                        <!-- Bulk Card -->
+                        <div class="card mt-2 col-md-12 g-0" style="min-height: 410px;">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs tx-card-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link card-link active" href="#" data-card-group="tx-card" data-card="broadcast-card">Broadcast</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body ms-2 me-2">
+                                <!-- Deposit -->
+                                <div class="tx-card broadcast-card">
+                                    <div class="mb-3">
+                                        <label class="form-label">Node</label>
+                                        <select id="tx-nodes" class="form-control form-select"></select>
+                                    </div>
+
+                                    <div class="mb-3 custom-node d-none">
+                                        <label class="form-label">Custom Node</label>
+                                        <input id="tx-custom-node" type="text" class="form-control" placeholder="Custom RPC node URL here">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Signed TX to broadcast</label>
+                                        <textarea id="tx-broadcast" type="text" class="form-control" rows="7"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer" style="border-top: none;">
+                                <div class="tx-card broadcast-card">
+                                    <button type="button" class="btn btn-primary w-100 mb-2" onclick="broadcast()">Broadcast</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5">
+                        <div class="form-text">This open source UI does not colllect any information however public RPC nodes listed on this UI belongs to third party which they may log and associate transactions with the sent IPs. You have your responsibility to hide your info like ip addresses or browser fingerprint.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="d-flex flex-wrap justify-content-between align-items-center pt-3 mt-3 mb-4 border-top">
+                <ul class="nav col-md-7 mb-3">
+                    <li class="nav-item">
+                        <a href="https://github.com/tornadocontrib/xmr-proxy" target="_blank" rel="noreferrer nofollow" class="nav-link px-2 text-muted"><i class="bi bi-git"></i> Source Code</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://element.tornadocash.social" target="_blank" rel="noreferrer nofollow" class="nav-link px-2 text-muted"><i class="bi bi-chat"></i> Matrix Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://t.me/tornadowithdraw" target="_blank" rel="noreferrer nofollow" class="nav-link px-2 text-muted"><i class="bi bi-telegram"></i> Telegram</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://x.com/tornadowithdraw" target="_blank" rel="noreferrer nofollow" class="nav-link px-2 text-muted"><i class="bi bi-twitter-x"></i> X</a>
+                    </li>
+                </ul>
+            </footer>
+        </div>
+
+        <!-- Send Modal -->
+        <div id="send" class="modal fade" tabindex="-2">
+            <div class="modal-dialog modal-xl" style="max-width: 950px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="send-title" class="modal-title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="status-screen" class="d-none">
+                            <div id="send-status" class="mt-1"></div>
+                            <img id="send-loading" src="https://cdn.jsdelivr.net/npm/xmr-proxy@1.0.0/static/torn2.png" class="loader status d-none">
+                            <img id="send-error" src="https://cdn.jsdelivr.net/npm/xmr-proxy@1.0.0/static/failed.png" class="status d-none">
+                            <img id="send-success" src="https://cdn.jsdelivr.net/npm/xmr-proxy@1.0.0/static/success.png" class="status d-none">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function errorMsg(msg, permanent) {
+                const msgId = `msg-${Date.now()}`;
+                
+                $('#messages').prepend(`
+                <div id="${msgId}" class="alert alert-danger" role="alert">
+                    ${msg}
+                </div>
+                `);
+
+                if (!permanent) {
+                    setTimeout(() => {
+                        $(`#${msgId}`).remove();
+                    }, 10000);
+                }
+            }
+
+            function hide(comp) {
+                if (!$(comp).hasClass('d-none')) {
+                    $(comp).addClass('d-none');
+                }
+            }
+            
+            function show(comp) {
+                if ($(comp).hasClass('d-none')) {
+                    $(comp).removeClass('d-none');
+                }
+            }
+
+            function showStatus(title, context, status) {
+                $('#send-title').text(title);
+
+                $('#send-status').empty();
+                $('#send-status').append(context);
+                
+                show('#status-screen');
+
+                if (!status) {
+                    hide('#send-success');
+                    hide('#send-error');
+                    show('#send-loading');
+                    return;
+                }
+
+                if (status === 'success') {
+                    show('#send-success');
+                    hide('#send-error');
+                    hide('#send-loading');
+                    return;
+                }
+
+                if (status === 'error') {
+                    hide('#send-success');
+                    show('#send-error');
+                    hide('#send-loading');
+                    return;
+                }
+            }
+
+            function randomIntFromInterval(min, max) { // min and max included 
+                return Math.floor(Math.random() * (max - min + 1) + min);
+            }
+
+            function listNodes() {
+                $('#tx-nodes').empty();
+
+                const onionIndex = nodes.findIndex(n => n.includes('.onion'));
+
+                const selectedNode = nodes[randomIntFromInterval(0, onionIndex - 1)];
+
+                for (const node of nodes) {
+                    $('#tx-nodes').append(`
+                    <option value="${node}"${selectedNode === node ? ' selected' : ''}>${node}</option>
+                    `);
+                }
+
+                $('#tx-nodes').append('<option value="custom">Custom Node</option>');
+            }
+
+            async function broadcast() {
+                try {
+                    // Toggle Modal
+                    new bootstrap.Modal('#send', { backdrop: 'static', keyboard: false }).toggle();
+
+                    let selectedNode = $('#tx-nodes').find(':selected').val();
+
+                    if (selectedNode === 'custom') {
+                        selectedNode = $('#tx-custom-node').val();
+                    }
+
+                    const rawTx = $('#tx-broadcast').val();
+
+                    showStatus('Sending Transaction', `Sending transaction to selected node ${selectedNode}`);
+
+                    const resp = await (await fetch(`${selectedNode}/send_raw_transaction`, {
+                        method: 'POST',
+                        body: JSON.stringify({'tx_as_hex': rawTx})
+                    })).json();
+
+                    console.log(resp);
+
+                    showStatus(
+                        'Transaction Sent',
+                        `Transaction sent to node ${selectedNode}, response: ${JSON.stringify(resp, null, 2)}`,
+                        'success'
+                    );
+
+                } catch (err) {
+                    showStatus('Error while sending tx', `Error while sending tx: ${err.message}`, 'error');
+                    console.log(err);
+                }
+            }
+
+            $(document).ready(async function() {
+                listNodes();
+
+                $('#tx-nodes').on('change', (e) => {
+                    e.preventDefault();
+
+                    if ($('#tx-nodes').find(':selected').val() === 'custom') {
+                        $('.custom-node').removeClass('d-none');
+                    } else {
+                        $('.custom-node').addClass('d-none');
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

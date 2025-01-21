@@ -1,0 +1,49 @@
+{
+    "name": "xmr-proxy",
+    "version": "1.0.0",
+    "description": "Reverse proxy to make Monero public nodes private again",
+    "main": "dist/xmrProxy.js",
+    "types": "dist/xmrProxy.d.ts",
+    "bin": {
+        "xmrProxy": "./dist/xmrProxy.js"
+    },
+    "license": "MIT",
+    "scripts": {
+        "lint": "eslint src/**/*.ts broadcast.html --ignore-pattern dist",
+        "types": "tsc --declaration --emitDeclarationOnly",
+        "build": "yarn types && webpack",
+        "update": "ts-node ./scripts/updateNodes.ts",
+        "sass": "sass static/bootstrap.scss static/bootstrap.css",
+        "dev": "ts-node ./src/xmrProxy.ts",
+        "start": "node ./dist/xmrProxy.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.10.2",
+        "bootstrap": "^5.3.3",
+        "commander": "^13.0.0",
+        "dotenv": "^16.4.7",
+        "esbuild-loader": "^4.2.2",
+        "eslint": "^9.17.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-import-resolver-typescript": "^3.7.0",
+        "eslint-plugin-html": "^8.1.2",
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-prettier": "^5.2.1",
+        "fetch-socks": "^1.3.2",
+        "prettier": "^3.4.2",
+        "sass": "^1.83.4",
+        "ts-node": "^10.9.2",
+        "tsc": "^2.0.4",
+        "typescript": "^5.7.2",
+        "typescript-eslint": "^8.18.1",
+        "undici": "6.20.0",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^6.0.1",
+        "winston": "^3.17.0"
+    },
+    "resolutions": {
+        "undici": "6.20.0",
+        "undici-types": "6.20.0"
+    }
+}

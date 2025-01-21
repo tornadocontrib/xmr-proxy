@@ -1,0 +1,31 @@
+// https://stackoverflow.com/questions/38792005/how-to-change-the-bootstrap-primary-color
+// required to get $green variable
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+
+$monero-orange:   #d26e2b !default;
+$monero-black:   #000403 !default;
+
+$primary: $monero-orange; // set the $primary variable
+$success: $monero-orange;
+$component-active-bg: $monero-orange;
+
+$nav-link-color: $monero-orange;
+$nav-link-hover-color: $white;
+
+$nav-pills-link-active-bg: $monero-orange;
+$nav-pills-link-active-color: $monero-black;
+
+$badge-color: $monero-black;
+
+$card-border-color: $monero-orange;
+
+// merge with existing $theme-colors map
+$theme-colors: map-merge($theme-colors, (
+  "primary": $primary,
+  "success": $success
+));
+
+// set changes
+@import "../node_modules/bootstrap/scss/bootstrap";
