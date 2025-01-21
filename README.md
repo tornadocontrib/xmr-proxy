@@ -22,4 +22,6 @@ You can check console for the signed raw transaction sent by local Monero wallet
 
 ### `broadcast.html`
 
+( for review https://tornadocontrib.github.io/xmr-proxy/broadcast.html, do not use online version in production )
+
 Simple UI to broadcast signed transactions, like https://xmrchain.net/rawtx but it can broadcast to any Monero RPC nodes listed on https://monero.fail or node provided with custom input.
