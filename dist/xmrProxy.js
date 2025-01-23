@@ -49431,8 +49431,11 @@ async function startProxy(options) {
       const dispatcher = getDispatcherFunc(options.torPort, options.proxy)?.();
       const resp = await fetch(`${options.rpcUrl}${req.url || ""}`, {
         method: req.method,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        headers: req.headers,
+        headers: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ...req.headers,
+          "User-Agent": "-"
+        },
         body,
         dispatcher
       });

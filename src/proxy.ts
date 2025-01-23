@@ -101,8 +101,11 @@ export async function startProxy(options: ProxyOptions) {
 
             const resp = await fetch(`${options.rpcUrl}${req.url || ''}`, {
                 method: req.method,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                headers: req.headers as any,
+                headers: {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    ...(req.headers as any),
+                    'User-Agent': '-',
+                },
                 body,
                 dispatcher,
             });
