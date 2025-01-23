@@ -269,14 +269,34 @@
                 return Math.floor(Math.random() * (max - min + 1) + min);
             }
 
-            function listNodes() {
+            async function getLatestNodes() {
+                try {
+                    const nodesJson = await (await fetch('https://monero.fail/nodes.json')).json();
+
+                    const web_compatible = nodesJson?.monero?.web_compatible;
+
+                    console.log(`Got ${web_compatible?.length} nodes from monero.fail`);
+
+                    return [...(web_compatible || [])].sort((a, b) => (a === b ? 0 : b.includes('.onion') ? -1 : 1));
+
+                } catch (err) {
+                    console.log('Error while fetching latest node from monero.fail, returning to fallback');
+                    console.log(err);
+
+                    return nodes;
+                }
+            }
+
+            async function listNodes() {
                 $('#tx-nodes').empty();
 
-                const onionIndex = nodes.findIndex(n => n.includes('.onion'));
+                const latestNodes = await getLatestNodes();
 
-                const selectedNode = nodes[randomIntFromInterval(0, onionIndex - 1)];
+                const onionIndex = latestNodes.findIndex(n => n.includes('.onion'));
 
-                for (const node of nodes) {
+                const selectedNode = latestNodes[randomIntFromInterval(0, onionIndex - 1)];
+
+                for (const node of latestNodes) {
                     $('#tx-nodes').append(`
                     <option value="${node}"${selectedNode === node ? ' selected' : ''}>${node}</option>
                     `);
@@ -320,7 +340,7 @@
             }
 
             $(document).ready(async function() {
-                listNodes();
+                await listNodes();
 
                 $('#tx-nodes').on('change', (e) => {
                     e.preventDefault();
